@@ -33,7 +33,99 @@ import pandas as pd
 # Import our heart murmur detector
 from heart_murmur_detector import HeartMurmurDetector
 
-st.set_page_config(page_title="stethicope type shi", layout="wide")
+st.set_page_config(
+    page_title="stethicope type shi", 
+    layout="wide",
+    initial_sidebar_state="expanded"  # Better for both PC and mobile
+)
+
+# Universal responsive CSS (PC + Mobile)
+st.markdown("""
+<style>
+    /* Universal improvements for all devices */
+    .stButton > button {
+        min-height: 44px;
+        min-width: 44px;
+        transition: all 0.3s ease;
+    }
+    
+    .stButton > button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+    
+    /* Responsive sidebar for all devices */
+    .css-1d391kg {
+        min-width: 250px;
+    }
+    
+    /* Responsive design that works on both PC and mobile */
+    @media (max-width: 768px) {
+        /* Mobile-specific optimizations */
+        .main .block-container {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+        
+        .stButton > button {
+            width: 100%;
+            height: 3rem;
+            font-size: 1.1rem;
+            margin: 0.5rem 0;
+        }
+        
+        .stRadio > div {
+            flex-direction: column;
+        }
+        
+        .stSlider > div {
+            margin: 1rem 0;
+        }
+        
+        .stTabs > div > div > div > div {
+            font-size: 1rem;
+            padding: 0.5rem;
+        }
+        
+        /* Mobile spectrograms */
+        .js-plotly-plot {
+            height: 300px !important;
+        }
+    }
+    
+    @media (min-width: 769px) {
+        /* Desktop-specific enhancements */
+        .main .block-container {
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+        
+        .stButton > button {
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+        }
+        
+        /* Desktop spectrograms */
+        .js-plotly-plot {
+            height: 500px !important;
+        }
+    }
+    
+    /* Universal theme consistency */
+    .stRadio > div > div {
+        background: transparent;
+    }
+    
+    .stSlider > div > div > div > div {
+        background: #1f77b4;
+    }
+    
+    .stTabs > div > div > div > div[data-baseweb="tab"] {
+        background: transparent;
+        color: inherit;
+    }
+</style>
+""", unsafe_allow_html=True)
 
 
 
@@ -84,22 +176,22 @@ with st.sidebar:
         # Chrome built-in microphone recording
         st.markdown("**🎤 Chrome Microphone Recording**")
         
-        # HTML5 Audio Recorder Component
+        # HTML5 Audio Recorder Component (Universal - PC + Mobile)
         audio_recorder_html = """
-        <div style="text-align: center; padding: 25px; border: 2px solid #1f77b4; border-radius: 15px; background: linear-gradient(135deg, #2c3e50, #34495e); color: white; box-shadow: 0 8px 32px rgba(0,0,0,0.3);">
-            <h3 style="color: #ecf0f1; margin-bottom: 25px; font-size: 24px; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">🎤 Browser Microphone Recorder</h3>
+        <div class="audio-recorder-universal" style="text-align: center; padding: clamp(20px, 3vw, 25px); border: 2px solid #1f77b4; border-radius: 15px; background: linear-gradient(135deg, #2c3e50, #34495e); color: white; box-shadow: 0 8px 32px rgba(0,0,0,0.3);">
+            <h3 style="color: #ecf0f1; margin-bottom: 25px; font-size: clamp(20px, 3vw, 24px); text-shadow: 0 2px 4px rgba(0,0,0,0.3);">🎤 Browser Microphone Recorder</h3>
             <div id="controls">
-                <button id="recordButton" style="background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; padding: 18px 35px; border: none; border-radius: 30px; font-size: 18px; font-weight: bold; cursor: pointer; margin: 10px; box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4); transition: all 0.3s ease; text-shadow: 0 1px 2px rgba(0,0,0,0.3);">
+                <button id="recordButton" style="background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; padding: clamp(12px, 2vw, 18px) clamp(20px, 3vw, 35px); border: none; border-radius: 30px; font-size: clamp(14px, 2.5vw, 18px); font-weight: bold; cursor: pointer; margin: 10px; box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4); transition: all 0.3s ease; text-shadow: 0 1px 2px rgba(0,0,0,0.3); min-height: 44px; min-width: 44px;">
                     🎤 Start Recording
                 </button>
-                <button id="stopButton" style="background: linear-gradient(135deg, #95a5a6, #7f8c8d); color: white; padding: 18px 35px; border: none; border-radius: 30px; font-size: 18px; font-weight: bold; cursor: pointer; margin: 10px; box-shadow: 0 4px 15px rgba(149, 165, 166, 0.4); transition: all 0.3s ease; text-shadow: 0 1px 2px rgba(0,0,0,0.3); display: none;">
+                <button id="stopButton" style="background: linear-gradient(135deg, #95a5a6, #7f8c8d); color: white; padding: clamp(12px, 2vw, 18px) clamp(20px, 3vw, 35px); border: none; border-radius: 30px; font-size: clamp(14px, 2.5vw, 18px); font-weight: bold; cursor: pointer; margin: 10px; box-shadow: 0 4px 15px rgba(149, 165, 166, 0.4); transition: all 0.3s ease; text-shadow: 0 1px 2px rgba(0,0,0,0.3); display: none; min-height: 44px; min-width: 44px;">
                     ⏹️ Stop Recording
                 </button>
             </div>
-            <div id="status" style="margin: 20px; font-size: 16px; color: #bdc3c7; font-weight: 500;"></div>
+            <div id="status" style="margin: 20px; font-size: clamp(14px, 2.5vw, 16px); color: #bdc3c7; font-weight: 500;"></div>
             <audio id="audioPlayback" controls style="width: 100%; max-width: 400px; margin: 20px; border-radius: 10px; background: #34495e;"></audio>
             <div id="downloadSection" style="margin: 20px; display: none;">
-                <button id="downloadButton" style="background: linear-gradient(135deg, #3498db, #2980b9); color: white; padding: 12px 25px; border: none; border-radius: 20px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4); transition: all 0.3s ease; text-shadow: 0 1px 2px rgba(0,0,0,0.3);">
+                <button id="downloadButton" style="background: linear-gradient(135deg, #3498db, #2980b9); color: white; padding: clamp(8px, 1.5vw, 12px) clamp(15px, 2.5vw, 25px); border: none; border-radius: 20px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4); transition: all 0.3s ease; text-shadow: 0 1px 2px rgba(0,0,0,0.3); min-height: 44px;">
                     💾 Download Recording
                 </button>
             </div>
@@ -355,7 +447,8 @@ if input_method == "Record with Microphone":
             "• Place microphone close to chest (over heart area)\n"
             "• Record for 5-20 seconds for best results\n"
             "• Stay quiet and minimize background noise\n"
-            "• Use the browser recorder below or upload a file", icon="🎤")
+            "• Use the browser recorder below or upload a file\n\n"
+            "📱 **Mobile Users:** Touch-friendly buttons optimized for your device!", icon="🎤")
 
 # Check if we have audio input (either uploaded or recorded)
 audio_available = uploaded is not None or recorded_audio is not None
